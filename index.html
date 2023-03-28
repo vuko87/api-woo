@@ -1,0 +1,258 @@
+<html>
+<head>
+	<style>
+		*{
+			margin: :0;
+			padding:0;
+			box-sizing:border-box;
+		}
+		.calendar{
+			width: 500px;
+    min-height: 500px;
+    display: flex;
+    padding: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+    background: #f8f8f8;
+    align-content: flex-start;
+		}
+		.box{
+			background: green;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    cursor:pointer;
+		}
+		.modal{
+			position: fixed;
+    top: 0;
+    left: 0;
+    color: #fff;
+    text-align: center;
+    background: rgb(21 25 21 / 90%);
+    width: 100%;
+    height: 100%;
+			z-index: 999;
+		}
+		.nascondi{
+			visibility: hidden;
+		}
+		.box-opened{
+			opacity: 0.7;
+		}
+	</style>
+</head>
+<body>
+	<h1>Test Javascript</h1>
+	<div class="calendar">
+
+
+	</div>
+	<div class="modal nascondi">
+<h2>PROVA MODALE</h2>
+<div class="content"></div>
+<button class="close">CHIUDI</button>
+</div>
+<script>
+
+	//Array
+    
+	//const milan_players = [ "Giroud","Ibra","Tonali"];
+	//console.log(milan_players[0]);
+	//console.log(milan_players.length);
+	//milan_players.push("Leao");
+    //console.log(milan_players[3]);
+    //console.log(milan_players.length);
+
+
+
+
+	//Object
+const car = {
+ color: "Red",
+ firm: "Fiat",
+ model:"Doblò"
+}
+//console.log(car.model);
+
+const concessionario = [
+	{
+		color: "Red",
+		type: "text",
+        firm: "Fiat",
+        model:"Doblò",
+        text:"test"
+	},
+	{
+		color: "Blue",
+		type: "img",
+        firm: "Alfa",
+        model:"Giulia",
+        url:"https://massimago.com/wp-content/uploads/2018/03/logo_massimago_H110.jpg"
+	},
+	{
+		color: "Green",
+        firm: "Lancia",
+        model:"Lybra"
+	},
+	{
+	color: "Red",
+        firm: "Fiat",
+        model:"Doblò"
+	},
+	{
+		color: "Blue",
+        firm: "Alfa",
+        model:"Giulia"
+	},
+	{
+		color: "Green",
+        firm: "Lancia",
+        model:"Lybra"
+	},
+	{
+		color: "Red",
+        firm: "Fiat",
+        model:"Doblò"
+	},
+	{
+		color: "Blue",
+        firm: "Alfa",
+        model:"Giulia"
+	},
+	{
+		color: "Green",
+        firm: "Lancia",
+        model:"Lybra"
+	},
+	{
+	color: "Red",
+        firm: "Fiat",
+        model:"Doblò"
+	},
+	{
+		color: "Blue",
+        firm: "Alfa",
+        model:"Giulia"
+	},
+	{
+		color: "Green",
+        firm: "Lancia",
+        model:"Lybra"
+	},
+	{
+		color: "Green",
+        firm: "Lancia",
+        model:"Lybra"
+	},
+	{
+	color: "Red",
+        firm: "Fiat",
+        model:"Doblò"
+	},
+	{
+		color: "Blue",
+        firm: "Alfa",
+        model:"Giulia"
+	},
+	{
+		color: "Green",
+        firm: "Lancia",
+        model:"Lybra"
+	}
+]
+//console.log(concessionario[2].model);
+
+let openedIndexes = [];
+
+//Controlliamo subito se c'erano degli indici salvati.
+
+const precedenteOpenedIndexed = localStorage.getItem('my-list');
+
+if (precedenteOpenedIndexed){
+	openedIndexes = JSON.parse(precedenteOpenedIndexed);
+	console.log(openedIndexes);
+}
+
+const calendar = document.querySelector('.calendar');
+const modal = document.querySelector('.modal');
+const close = document.querySelector('.close');
+const modalContent = document.querySelector('.content');
+
+for (let i = 0; i < concessionario.length; i++){
+	const box = createBox(i);
+	
+	calendar.innerHTML += box;
+}
+
+
+//Eventi Dinamici
+
+//Rendere cliccabili
+
+const boxes = document.querySelectorAll('.box');
+for (let i = 0; i < boxes.length; i++){
+	const box = boxes[i];
+	box.addEventListener('click',function(){
+		console.log(`cliccato`);
+		box.classList.add('box-opened');
+		insertModalContent(i);
+		openModal();
+		addToOpenedIndexes(i);
+
+	});
+}
+
+close.addEventListener('click',function(){
+	closeModal();
+})
+
+//Funzioni
+
+function createBox(i){
+	const date = i + 1;
+	const brand = concessionario[i].firm;
+	let classes = "box";
+
+	if(openedIndexes.includes(i)){
+		classes = "box box-opened";
+	}
+
+return `<div class="${classes}"><div class="box-date">${date}</div><div class="brand">${brand}</div></div>`
+}
+
+function openModal(){
+	modal.classList.remove('nascondi');
+}
+function closeModal(){
+	modal.classList.add('nascondi');
+}
+function insertModalContent(i){
+	const surprise = concessionario[i];
+
+	if (surprise.type == "img"){
+modalContent.innerHTML = `<img src="${surprise.url}" alt="${surprise.firm}">`;
+} else if (surprise.type == "text") {
+modalContent.innerHTML = `<p>${surprise.text}</p>`;
+}
+}
+
+function addToOpenedIndexes(i){
+	i = i + 1;
+	if (!openedIndexes.includes(i)){
+		openedIndexes.push(i);
+		localStorage.setItem('my-list',JSON.stringify(openedIndexes));
+	}
+	console.log(openedIndexes);
+
+}
+
+
+</script>	
+</body>
+</html>
